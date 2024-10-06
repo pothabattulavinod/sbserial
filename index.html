@@ -1,108 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-		<!-- JW Player script -->
-		<script src="https://ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
-		<!-- JW Player license key -->
-		<script>
-			jwplayer.key = 'EN7MpaKagehNwodFmcDG3/k/QCMXIo8qyzO5Fi+Bxq0=';
-		</script>
+    <!-- JW Player script -->
+    <script src="https://ssl.p.jwpcdn.com/player/v/8.22.0/jwplayer.js"></script>
+    <!-- JW Player license key -->
+    <script>
+        jwplayer.key = 'EN7MpaKagehNwodFmcDG3/k/QCMXIo8qyzO5Fi+Bxq0=';
+    </script>
 
-		<style>
-			body {
-				margin: 0;
-				overflow: hidden;
-			}
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
 
-			#player {
-				width: 100% !important;
-				height: 100% !important;
-			}
+        #player {
+            width: 100% !important;
+            height: 100% !important;
+            position: relative;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK2qab8nYPofy3fraUeubM-WVGwLll1Efb6cnk3583uqm7tCe-QW-y4KOl&s=10') no-repeat center center;
+            background-size: cover;
+        }
 
-			.jwplayer .jw-progress {
-				background-color: #FF0000;
-			}
+        /* Position title */
+        .jw-title-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 10;
+            color: #ff6347;
+        }
 
-			button:hover {
-				background: #FF0000 !important;
-			}
+        /* Title styling */
+        .jw-title-primary {
+            font-weight: bold;
+            font-size: 1em;
+            color: #ff6347 !important;
+        }
 
-			.jw-icon-forward {
-				background: url('https://www.kindpng.com/picc/b/79-797059_forward-icon-png.png') no-repeat center center;
-				background-size: 100%;
-			}
+        /* Change progress bar (timer) color */
+        .jwplayer .jw-progress {
+            background-color: #ff6347;
+        }
 
-			/* Hide the reset option in the right-click menu */
-			.jw-rightclick .jw-reset {
-				display: none;
-			}
-		</style>
-	</head>
+        .jwplayer .jw-text-time {
+            color: #ff6347 !important;
+        }
 
-	<body>
+        .jwplayer .jw-title {
+            color: #ff6347 !important;
+        }
 
-		<div id="player"></div>
+        button:hover {
+            background: #ff6347 !important;
+        }
 
-		<script type="text/javascript">
-			document.addEventListener("DOMContentLoaded", function() {
-				var playerInstance = jwplayer("player");
+        .jw-icon-forward {
+            background: url('https://www.kindpng.com/picc/b/79-797059_forward-icon-png.png') no-repeat center center;
+            background-size: 100%;
+        }
 
-				// Set up JW Player with a single URL
-				playerInstance.setup({
-					aspectratio: "16:9",
-					preload: 'auto',
-					primary: 'html5',
-					sources: [{
-						file: "https://58a49ee706238.streamlock.net:8485/uploads/jio_1720277/d1bb5624ac4b1654ee1ed7ce0861f30e.mp4/index.m3u8"
-					}],
-					width: '100%',
-					height: '100%',
-					controls: true,
-					displayPlaybackLabel: true,
-					advertising: {
-						client: "vast",
-						schedule: [{
-							offset: "pre",
-							tag: ""
-						}]
-					}
-				});
+        .jw-rightclick .jw-reset {
+            display: none;
+        }
 
-				// Save and restore playback time on ready
-				playerInstance.on('ready', function() {
-					var lastTimeKey = 'jwplayer-last-time';
-					var lastTime = localStorage.getItem(lastTimeKey);
-					if (lastTime) {
-						playerInstance.seek(parseFloat(lastTime));
-					}
+        /* Mobile view adjustments */
+        @media (max-width: 768px) {
+            .jw-title-primary {
+                font-size: 0.8em !important;
+            }
+        }
+    </style>
+</head>
 
-					playerInstance.addButton(
-						'https://www.kindpng.com/picc/b/79-797059_forward-icon-png.png',
-						'Forward 10 seconds',
-						function() {
-							playerInstance.seek(playerInstance.getPosition() + 10);
-						},
-						'forward10'
-					);
-				});
+<body>
 
-				// Save the current playback position when the video is paused
-				playerInstance.on('pause', function() {
-					var lastTimeKey = 'jwplayer-last-time';
-					localStorage.setItem(lastTimeKey, playerInstance.getPosition());
-				});
+    <div id="player"></div>
 
-				// Reset the last playback position when the video is complete
-				playerInstance.on('complete', function() {
-					localStorage.setItem('jwplayer-last-time', 0);
-				});
-			});
-		</script>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var playerInstance = jwplayer("player");
 
-	</body>
+            playerInstance.setup({
+                aspectratio: "16:9",
+                primary: 'html5',
+                sources: [{
+                    file: "https://58a49ee706238.streamlock.net:8485/uploads/jio_1720277/d1bb5624ac4b1654ee1ed7ce0861f30e.mp4/index.m3u8"
+                }],
+                width: '100%',
+                height: '100%',
+                controls: true,
+                displayPlaybackLabel: true,
+                autostart: false,
+                preload: 'none',
+                advertising: {
+                    client: "vast",
+                    schedule: [{
+                        offset: "pre",
+                        tag: ""
+                    }]
+                },
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK2qab8nYPofy3fraUeubM-WVGwLll1Efb6cnk3583uqm7tCe-QW-y4KOl&s=10',
+                title: "05 OCT 2024",  // Updated Title
+            });
+
+            // Add a custom button to forward the video 10 seconds
+            playerInstance.addButton(
+                'https://www.kindpng.com/picc/b/79-797059_forward-icon-png.png',
+                'Forward 10 seconds',
+                function () {
+                    playerInstance.seek(playerInstance.getPosition() + 10);
+                },
+                'forward10'
+            );
+        });
+    </script>
+
+</body>
 
 </html>
