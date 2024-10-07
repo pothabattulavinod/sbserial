@@ -105,7 +105,23 @@
                     }]
                 },
                 image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK2qab8nYPofy3fraUeubM-WVGwLll1Efb6cnk3583uqm7tCe-QW-y4KOl&s=10',
-                title: "07 OCT 2024",  // Updated Title
+                title: "07 OCT 2024",
+            });
+
+            // Force full screen and rotate the screen on play
+            playerInstance.on('play', function() {
+                playerInstance.setFullscreen(true);
+
+                // Check if the screen orientation API is supported
+                if (screen.orientation && screen.orientation.lock) {
+                    // Lock the screen in landscape mode
+                    screen.orientation.lock('landscape').catch(function (error) {
+                        console.log('Screen orientation lock failed: ' + error);
+                    });
+                } else if (window.screen.lockOrientation) {
+                    // For older browsers
+                    window.screen.lockOrientation('landscape');
+                }
             });
 
             // Add a custom button to forward the video 10 seconds
@@ -117,6 +133,19 @@
                 },
                 'forward10'
             );
+
+            // Unlock the orientation when the video ends or the user pauses it
+            playerInstance.on('pause', function() {
+                if (screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                }
+            });
+
+            playerInstance.on('complete', function() {
+                if (screen.orientation && screen.orientation.unlock) {
+                    screen.orientation.unlock();
+                }
+            });
         });
     </script>
 
